@@ -583,3 +583,220 @@ h3 {
     color: #94a3b8;
     font-size: 0.85rem;
 }
+
+/* ============================
+   RESPONSIVO - MOBILE 320px a 420px
+   ============================ */
+@media (max-width: 480px) {
+    header {
+        min-width: unset;
+        width: 100%;
+        padding: 10px 16px;
+        border-radius: 20px;
+    }
+
+    header ul {
+        gap: 8px;
+    }
+
+    header ul li a {
+        font-size: 12px;
+    }
+
+    header a {
+        font-size: 9px;
+        align-items: center;
+    }
+
+    .brand {
+        font-size: 7px;
+        gap: 6px;
+    }
+
+    .IniciaisNome {
+        width: 28px;
+        height: 28px;
+        font-size: 0.65rem;
+        display: none;
+    }
+
+    .brand span {
+        display: none;
+    }
+
+    #Hero {
+        padding: 96px 16px 48px;
+    }
+
+    #HeroTilte {
+        font-size: clamp(1.6rem, 8vw, 2.2rem);
+        line-height: 1.2;
+    }
+
+    .heroSub {
+        font-size: 0.9rem;
+        max-width: 100%;
+    }
+
+    .heroActions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn,
+    .btnGosth {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .heroBagdes {
+        gap: 0.4rem;
+    }
+
+    .heroBagdes li {
+        font-size: 0.72rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    #Section,
+    #Sobre,
+    #stack,
+    #Certificados,
+    #contato {
+        padding: 64px 0px;
+    }
+
+    .container {
+        padding: 0 16px 24px;
+    }
+
+    .container-split {
+        grid-template-columns: 1fr;
+        padding: 0 16px;
+        gap: 32px;
+    }
+
+    h2 {
+        font-size: 28px;
+    }
+
+    #stack .container h2,
+    .heading-reveal h2 {
+        font-size: 28px;
+    }
+
+    .pillars {
+        grid-template-columns: 1fr;
+    }
+
+    .grid-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .pillarCard,
+    .card {
+        padding: 20px;
+    }
+
+    .contant {
+        padding: 48px 24px;
+    }
+
+    .contant h2 {
+        font-size: 28px;
+    }
+
+    .contant p {
+        font-size: 0.95rem;
+    }
+
+    .contant-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .cb-col {
+        width: 120px;
+    }
+}
+
+/* ============================
+   RESPONSIVO - TABLET 768px a 950px
+   ============================ */
+@media (min-width: 768px) and (max-width: 950px) {
+    header {
+        min-width: 92%;
+        padding: 10px 20px;
+    }
+
+    header ul {
+        gap: 16px;
+    }
+
+    header ul li a {
+        font-size: 13.5px;
+    }
+
+    #Hero {
+        padding: 104px 32px 56px;
+    }
+
+    #HeroTilte {
+        font-size: clamp(2rem, 5vw, 3.2rem);
+    }
+
+    .container {
+        padding: 0 32px 40px;
+    }
+
+    .container-split {
+        grid-template-columns: 1fr;
+        padding: 0 32px;
+        gap: 40px;
+    }
+
+    .pillars {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    h2,
+    #stack .container h2,
+    .heading-reveal h2 {
+        font-size: 34px;
+    }
+
+    .contant {
+        padding: 72px 40px;
+    }
+}
+
+/* ============================
+   RESPONSIVO - LAPTOP 1024px a 1100px
+   ============================ */
+@media (min-width: 1024px) and (max-width: 1100px) {
+    header {
+        min-width: 90%;
+        padding: 9px 20px;
+    }
+
+    .container-split {
+        max-width: 100%;
+        padding: 0 32px;
+        gap: 40px;
+    }
+
+    .container {
+        max-width: 100%;
+        padding: 0 32px 40px;
+    }
+
+    .pillars,
+    .grid-cards {
+        gap: 18px;
+    }
+}
