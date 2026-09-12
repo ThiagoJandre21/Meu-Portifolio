@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fundo animado de código 3D</title>
+<style>
+  :root{
+    --bg: #070a12;
+    --kw: #c792ea;   /* keywords */
+    --str: #7fd88f;  /* strings */
+    --fn: #6cb6ff;   /* functions */
+    --num: #f2a65a;  /* numbers */
+    --cm: #4b5568;   /* comments */
+    --pl: #e6e6f0;   /* plain */
+    --tag: #ff8fa3;  /* tags/punct */
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;
+    padding:0;
+    height:100%;
+    background: var(--bg);
+    overflow:hidden;
+    font-family: 'Fira Code','JetBrains Mono',Consolas,'Courier New',monospace;
+  }
+
+  .stage{
+    position:relative;
+    width:100%;
+    height:100vh;
+    background:
+      radial-gradient(ellipse at 50% 40%, rgba(120,140,255,0.10), transparent 60%),
+      var(--bg);
+    perspective: 900px;
+    overflow:hidden;
+  }
+
+  .tunnel{
+    position:absolute;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    transform-style:preserve-3d;
+    gap: 0;
+  }
+
+  .col{
+    position:relative;
+    width: 190px;
+    height: 220vh;
+    margin: 0 6px;
+    flex-shrink:0;
+    transform-style:preserve-3d;
+    opacity: var(--op, .85);
+    filter: blur(var(--bl,0px));
+    will-change: transform;
+  }
+
+  .col .track{
+    position:absolute;
+    top:0; left:0;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    animation: rise var(--dur,18s) linear infinite;
+    animation-delay: var(--del,0s);
+  }
+
+  .track code{
+    display:block;
+    white-space:pre;
+    font-size: 12.5px;
+    line-height:1.65;
+    padding:1px 10px;
+    color: var(--pl);
+    text-shadow: 0 0 6px rgba(120,150,255,0.08);
+  }
+
+  @keyframes rise{
+    from{ transform: translateY(0); }
+    to{ transform: translateY(-50%); }
+  }
+
+  .kw{color:var(--kw);}
+  .st{color:var(--str);}
+  .fn{color:var(--fn);}
+  .nu{color:var(--num);}
+  .cm{color:var(--cm); font-style:italic;}
+  .tg{color:var(--tag);}
+
+  .vignette{
+    position:absolute; inset:0;
+    background:
+      linear-gradient(to bottom, var(--bg) 0%, transparent 14%, transparent 82%, var(--bg) 100%),
+      linear-gradient(to right, var(--bg) 0%, transparent 12%, transparent 88%, var(--bg) 100%),
+      radial-gradient(ellipse at center, transparent 35%, rgba(3,4,8,0.55) 100%);
+    pointer-events:none;
+  }
+
+  .scan{
+    position:absolute; inset:0;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.015) 0px,
+      rgba(255,255,255,0.015) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    mix-blend-mode: overlay;
+    pointer-events:none;
+  }
+
+  .hero{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:#f2f3f8;
+    pointer-events:none;
+  }
+  .hero h1{
+    margin:0;
+    font-size:clamp(28px,5vw,54px);
+    font-weight:600;
+    letter-spacing:-0.02em;
+    text-shadow: 0 0 30px rgba(0,0,0,0.6);
+  }
+  .hero p{
+    margin:.6rem 0 0;
+    color:#a9b0c6;
+    font-size:clamp(13px,1.6vw,16px);
+    text-shadow: 0 0 20px rgba(0,0,0,0.6);
+  }
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+  <div class="tunnel" id="tunnel"></div>
+  <div class="scan"></div>
+  <div class="vignette"></div>
+
+  <div class="hero">
+    <h1>Seu título aqui</h1>
+    <p>Substitua este bloco pelo conteúdo real do seu site</p>
+  </div>
+</div>
+
+<script>
+const snippets = [
+`function render(state) {
+  const { nodes, edges } = state;
+  return nodes.map(n => (
+    draw(n, edges[n.id])
+  ));
+}`,
+`class Vector3 {
+  constructor(x, y, z) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+  }
+  add(v) {
+    return new Vector3(
+      this.x + v.x,
+      this.y + v.y,
+      this.z + v.z
+    );
+  }
+}`,
+`const cache = new Map();
+
+async function fetchData(url) {
+  if (cache.has(url)) {
+    return cache.get(url);
+  }
+  const res = await fetch(url);
+  const data = await res.json();
+  cache.set(url, data);
+  return data;
+}`,
+`def normalize(vec):
+    length = sum(v ** 2 for v in vec) ** 0.5
+    if length == 0:
+        return vec
+    return [v / length for v in vec]
+
+# apply to every particle
+for p in particles:
+    p.dir = normalize(p.dir)`,
+`export const useTimer = (ms) => {
+  const [tick, setTick] = useState(0);
+  useEffect(() => {
+    const id = setInterval(
+      () => setTick(t => t + 1),
+      ms
+    );
+    return () => clearInterval(id);
+  }, [ms]);
+  return tick;
+};`,
+`SELECT u.id, u.name,
+       COUNT(o.id) AS orders
+FROM users u
+LEFT JOIN orders o
+  ON o.user_id = u.id
+GROUP BY u.id
+ORDER BY orders DESC
+LIMIT 20;`,
+`type Result<T> =
+  | { ok: true; value: T }
+  | { ok: false; error: string };
+
+function unwrap<T>(r: Result<T>): T {
+  if (!r.ok) throw new Error(r.error);
+  return r.value;
+}`,
+`@keyframes float {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-12px); }
+  100% { transform: translateY(0); }
+}
+.card {
+  animation: float 4s ease-in-out infinite;
+}`,
+];
+
+function highlight(code){
+  return code
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/(#.*|\/\/.*)/g, '<span class="cm">$1</span>')
+    .replace(/(&#39;.*?&#39;|"[^"]*"|`[^`]*`)/g, '<span class="st">$1</span>')
+    .replace(/\b(function|const|let|var|return|if|else|for|while|class|constructor|new|async|await|export|import|from|def|type|interface|extends|SELECT|FROM|WHERE|GROUP BY|ORDER BY|LIMIT|LEFT JOIN|ON|AS|throw|useEffect|useState)\b/g,
+      '<span class="kw">$1</span>')
+    .replace(/\b(\d+\.?\d*)\b/g, '<span class="nu">$1</span>')
+    .replace(/([a-zA-Z_]\w*)(?=\()/g, '<span class="fn">$1</span>');
+}
+
+const tunnel = document.getElementById('tunnel');
+const COLS = 9;
+
+for (let i = 0; i < COLS; i++) {
+  const col = document.createElement('div');
+  col.className = 'col';
+
+  const center = (COLS - 1) / 2;
+  const dist = Math.abs(i - center);
+  const dir = i < center ? -1 : (i > center ? 1 : 0);
+
+  const rotY = dir * (10 + dist * 6);
+  const z = -dist * 90;
+  const scale = 1 - dist * 0.06;
+  const opacity = Math.max(0.28, 1 - dist * 0.22);
+  const blur = dist * 0.6;
+
+  col.style.transform =
+    `rotateY(${rotY}deg) translateZ(${z}px) scale(${scale})`;
+  col.style.setProperty('--op', opacity);
+  col.style.setProperty('--bl', blur + 'px');
+
+  const track = document.createElement('div');
+  track.className = 'track';
+
+  const dur = 22 + Math.random() * 14;
+  const del = -Math.random() * dur;
+  track.style.setProperty('--dur', dur.toFixed(1) + 's');
+  track.style.setProperty('--del', del.toFixed(1) + 's');
+
+  let block = '';
+  const shuffled = [...snippets].sort(() => Math.random() - 0.5);
+  for (let r = 0; r < 2; r++) {
+    shuffled.forEach(s => { block += s + '\n\n'; });
+  }
+
+  const pre = document.createElement('code');
+  pre.innerHTML = highlight(block);
+  track.appendChild(pre);
+
+  const pre2 = pre.cloneNode(true);
+  track.appendChild(pre2);
+
+  col.appendChild(track);
+  tunnel.appendChild(col);
+}
+</script>
+
+</body>
+</html>
